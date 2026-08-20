@@ -37,5 +37,6 @@
   ログイン時にパスフレーズ入力待ちでVagrantの仮想マシン上等问题がある場合は、エイリアスを登録して手動で入力するなどで対応する。
 
   ```shell
-  cat ~/.bash_aliases | grep keychain >/dev/null || echo "alias start-keychain='eval \`keychain --eval --agents ssh id_ed25519\`'" >> ~/.bash_aliases
+  mkdir -p ~/.bashrc.d
+  [ -f ~/.bashrc.d/keychain ] && grep keychain ~/.bashrc.d/keychain >/dev/null || echo "alias start-keychain='eval \`keychain --eval --agents ssh id_ed25519\`'" >> ~/.bashrc.d/keychain
   ```

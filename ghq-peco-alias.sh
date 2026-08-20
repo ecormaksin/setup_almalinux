@@ -1,14 +1,17 @@
 #!/usr/bin/env bash
 
-BASH_ALIASES_FILE_PATH=$HOME/.bash_aliases
+BASH_RC_D_DIR=$HOME/.bashrc.d
+BASH_RC_D_FILE_PATH=${BASH_RC_D_DIR}/gp
 
-[ ! -e "${BASH_ALIASES_FILE_PATH}" ] && touch "${BASH_ALIASES_FILE_PATH}"
+mkdir -p "${BASH_RC_D_DIR}"
 
-cat "${BASH_ALIASES_FILE_PATH}" | grep -E "^alias gp='cd \\$\(ghq list --full-path \| peco\)'$" >/dev/null
-if [ $? -eq 0 ]; then
-    exit 0
+if [ -f "${BASH_RC_D_FILE_PATH}" ]; then
+    grep -E "^alias gp='cd \\$\(ghq list --full-path \| peco\)'$" "${BASH_RC_D_FILE_PATH}" >/dev/null
+    if [ $? -eq 0 ]; then
+        exit 0
+    fi
 fi
 
-echo '' >> "${BASH_ALIASES_FILE_PATH}"
-echo 'alias gp='\''cd $(ghq list --full-path | peco)'\' >> "${BASH_ALIASES_FILE_PATH}"
-. "${BASH_ALIASES_FILE_PATH}"
+echo '' >> "${BASH_RC_D_FILE_PATH}"
+echo 'alias gp='\''cd $(ghq list --full-path | peco)'\' >> "${BASH_RC_D_FILE_PATH}"
+. "${BASH_RC_D_FILE_PATH}"

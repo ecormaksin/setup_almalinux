@@ -1,18 +1,23 @@
 #!/usr/bin/env bash
 
-BASH_ALIASES_FILE_PATH=$HOME/.bash_aliases
+BASH_RC_D_DIR=$HOME/.bashrc.d
+BASH_RC_D_FILE_PATH=${BASH_RC_D_DIR}/vim
 VIM_ALIAS_STRING="alias vi='vim'"
 
 sudo curl --output /etc/vimrc.local --silent https://raw.githubusercontent.com/ecormaksin/vimrc/main/vimrc
 
-[ ! -e "${BASH_ALIASES_FILE_PATH}" ] && touch "${BASH_ALIASES_FILE_PATH}"
+mkdir -p "${BASH_RC_D_DIR}"
 
-grep "${VIM_ALIAS_STRING}" "${BASH_ALIASES_FILE_PATH}" >/dev/null
-if [ $? -ne 0 ]; then
-    echo "" >> "${BASH_ALIASES_FILE_PATH}"
-    echo "${VIM_ALIAS_STRING}" >> "${BASH_ALIASES_FILE_PATH}"
-    . "${BASH_ALIASES_FILE_PATH}"
+if [ -f "${BASH_RC_D_FILE_PATH}" ]; then
+    grep "${VIM_ALIAS_STRING}" "${BASH_RC_D_FILE_PATH}" >/dev/null
+    if [ $? -ne 0 ]; then
+        echo "" >> "${BASH_RC_D_FILE_PATH}"
+        echo "${VIM_ALIAS_STRING}" >> "${BASH_RC_D_FILE_PATH}"
+    fi
+else
+    echo "${VIM_ALIAS_STRING}" >> "${BASH_RC_D_FILE_PATH}"
 fi
+. "${BASH_RC_D_FILE_PATH}"
 
 rpm -q vim-enhanced >/dev/null
 if [ $? -ne 0 ]; then
